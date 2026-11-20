@@ -1,0 +1,40 @@
+<ion-content>
+    <main class="history-page">
+        <p class="eyebrow">YOUR JOURNAL</p>
+        <h1>Sleep history</h1>
+        <p class="intro">Your nights and daytime check-ins, newest first.</p>
+
+        <!-- 两类记录按时间排列，每个日期只显示一次标题 -->
+        @for (item of historyItems; track item.id) {
+        @if (item.showDateHeader) {
+        <h2 class="date-heading">
+            {{ item.when | date:'EEEE · MMM d' }}
+        </h2>
+        }
+
+        <article class="record">
+            @if (item.overnight; as night) {
+            <span class="record-icon">☾</span>
+            <div>
+                <strong>Overnight · {{ durationLabel(night) }}</strong>
+                <p>
+                    Bed {{ night.sleepStart | date:'MMM d, h:mm a' }}
+                    · Up {{ night.sleepEnd | date:'MMM d, h:mm a' }}
+                </p>
+            </div>
+            }
+
+            @if (item.sleepiness; as checkIn) {
+            <span class="record-icon daytime">☼</span>
+            <div>
+                <strong>Daytime check-in</strong>
+                <p>{{ checkIn.summaryString() }}</p>
+                <p>{{ checkIn.loggedAt | date:'h:mm a' }}</p>
+            </div>
+            }
+        </article>
+        } @empty {
+        <p class="empty">No records yet. Start with your first sleep log.</p>
+        }
+    </main>
+</ion-content>

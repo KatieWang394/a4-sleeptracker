@@ -1,0 +1,101 @@
+/* 夜间记录页沿用方案 C 的暖色与紫色主按钮 */
+ion-content {
+  --background: #fff9f1;
+  --color: #352d3d;
+}
+
+.sleep-page {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+}
+
+.eyebrow {
+  color: #817784;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  margin: 10px 0 8px;
+  font-size: 36px;
+  font-weight: 850;
+  letter-spacing: -0.05em;
+}
+
+.intro {
+  margin: 0 0 24px;
+  color: #817784;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.form-card {
+  padding: 20px 18px;
+  background: #fffdfb;
+  border: 1px solid #eadce3;
+  border-radius: 20px;
+}
+
+.field+.field {
+  margin-top: 22px;
+}
+
+.field label {
+  display: block;
+  margin-bottom: 9px;
+  font-size: 13px;
+  font-weight: 750;
+}
+
+.field input {
+  width: 100%;
+  min-height: 47px;
+  padding: 10px;
+  background: #fff9f1;
+  border: 1px solid #d9cbd3;
+  border-radius: 12px;
+  color: #352d3d;
+}
+
+.preview {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin: 15px 0;
+  padding: 17px;
+  background: #ffdece;
+  border: 1px solid #eea88f;
+  border-radius: 17px;
+}
+
+.preview span {
+  color: #766a75;
+  font-size: 13px;
+}
+
+.preview strong {
+  color: #542c61;
+  font-size: 22px;
+}
+
+.feedback {
+  font-size: 13px;
+}
+
+.error {
+  color: #a43843;
+}
+
+.success {
+  color: #356849;
+}
+
+ion-button {
+  --background: #542c61;
+  --border-radius: 14px;
+  --box-shadow: none;
+  min-height: 50px;
+  font-weight: 700;
+}

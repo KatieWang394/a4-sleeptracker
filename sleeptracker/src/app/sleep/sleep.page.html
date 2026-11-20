@@ -1,0 +1,38 @@
+<ion-content>
+  <main class="sleep-page">
+    <p class="eyebrow">01 / NIGHTTIME</p>
+    <h1>Log last night</h1>
+    <p class="intro">
+      Fill this in when you wake up. The night may cross midnight.
+    </p>
+
+    <!-- 日期和时间都要输入，才能正确记录跨午夜的睡眠 -->
+    <section class="form-card">
+      <div class="field">
+        <label for="bedtime">When did you go to bed?</label>
+        <input id="bedtime" type="datetime-local" [(ngModel)]="bedtime">
+      </div>
+
+      <div class="field">
+        <label for="wakeTime">When did you wake up?</label>
+        <input id="wakeTime" type="datetime-local" [(ngModel)]="wakeTime">
+      </div>
+    </section>
+
+    <div class="preview">
+      <span>Time in bed</span>
+      <strong>{{ durationPreview }}</strong>
+    </div>
+
+    @if (errorMessage) {
+    <p class="feedback error" role="alert">{{ errorMessage }}</p>
+    }
+    @if (successMessage) {
+    <p class="feedback success" role="status">{{ successMessage }}</p>
+    }
+
+    <ion-button expand="block" (click)="addOvernight()">
+      Save sleep log
+    </ion-button>
+  </main>
+</ion-content>

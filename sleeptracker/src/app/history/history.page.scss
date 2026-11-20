@@ -1,0 +1,83 @@
+h1 {
+    margin: 10px 0 7px;
+    font-size: 36px;
+    font-weight: 850;
+    letter-spacing: -0.05em;
+}
+
+ion-content {
+    --background: #fff9f1;
+    --color: #352d3d;
+}
+
+.history-page {
+    width: min(100%, 460px);
+    margin: 0 auto;
+    padding: 28px 18px 48px;
+}
+
+.eyebrow {
+    color: #817784;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.12em;
+}
+
+h1 {
+    margin: 10px 0 7px;
+    font-size: 36px;
+    letter-spacing: -0.05em;
+}
+
+.intro {
+    margin-bottom: 25px;
+    color: #817784;
+    font-size: 13px;
+}
+
+.record {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+    padding: 16px;
+    margin-bottom: 10px;
+    background: #fffdfb;
+    border: 1px solid #eadce3;
+    border-radius: 17px;
+}
+
+.record-icon {
+    flex: 0 0 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    background: #f6e5e9;
+    border-radius: 11px;
+    color: #542c61;
+}
+
+.record-icon.daytime {
+    background: #f9ebd6;
+}
+
+.record strong {
+    font-size: 13px;
+}
+
+.record p,
+.empty {
+    margin: 5px 0 0;
+    color: #817784;
+    font-size: 12px;
+    line-height: 1.5;
+}
+
+/* 按日期分隔记录，方便快速浏览 */
+.date-heading {
+    margin: 26px 2px 11px;
+    color: #90788c;
+    font-size: 12px;
+    font-weight: 850;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+}

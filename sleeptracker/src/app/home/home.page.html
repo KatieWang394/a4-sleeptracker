@@ -1,20 +1,54 @@
-<ion-header [translucent]="true">
-  <ion-toolbar>
-    <ion-title>
-      Blank
-    </ion-title>
-  </ion-toolbar>
-</ion-header>
+<ion-content>
+  <main class="today-page">
+    <div class="brand-row">
+      <strong class="brand">
+        <span class="brand-mark" aria-hidden="true">✷</span>
+        Sleep Notes
+      </strong>
+    </div>
+    <p class="eyebrow">YOUR REST DIARY</p>
+    <h1>Make space<br>for rest.</h1>
+    <!-- 显示夜间睡眠摘要；没有记录时显示首次使用提示 -->
+    @if (latestSleep; as entry) {
+    <section class="sleep-card">
+      <div class="card-top">
+        <span>LAST NIGHT'S NOTE</span>
+        <span class="badge">☾ rested</span>
+      </div>
 
-<ion-content [fullscreen]="true">
-  <ion-header collapse="condense">
-    <ion-toolbar>
-      <ion-title size="large">Blank</ion-title>
-    </ion-toolbar>
-  </ion-header>
+      <strong class="duration">{{ durationLabel }}</strong>
+      <p>
+        Bed {{ entry.sleepStart | date:'MMM d, h:mm a' }}
+        · Up {{ entry.sleepEnd | date:'MMM d, h:mm a' }}
+      </p>
 
-  <div id="container">
-    <strong>Ready to create an app?</strong>
-    <p>Start with Ionic <a target="_blank" rel="noopener noreferrer" href="https://ionicframework.com/docs/components">UI Components</a></p>
-  </div>
+      <!-- 数据足够时才展示与上一条记录的比较 -->
+      <div class="mini-grid">
+        @if (comparisonLabel; as change) {
+        <div class="mini-card">
+          <span>Previous log</span>
+          <strong>{{ change }}</strong>
+        </div>
+        }
+
+        <div class="mini-card">
+          <span>Last 7 days</span>
+          <strong>
+            {{ nightsLast7Days }}
+            {{ nightsLast7Days === 1 ? 'night' : 'nights' }}
+          </strong>
+        </div>
+      </div>
+    </section>
+    } @else {
+    <section class="sleep-card">
+      <h2>No sleep logged yet</h2>
+      <p>Start by recording last night's sleep.</p>
+    </section>
+    }
+
+    <ion-button expand="block" (click)="openSleep()">
+      Write last night's sleep →
+    </ion-button>
+  </main>
 </ion-content>
