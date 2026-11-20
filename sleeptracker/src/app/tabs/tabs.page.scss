@@ -1,0 +1,16 @@
+/* 底部导航沿用方案 C 的暖色与紫色强调 */
+ion-tab-bar {
+  --background: #fff9f1;
+  border-top: 1px solid #dccdd4;
+}
+
+ion-tab-button {
+  --background: #fff9f1;
+  --color: #89768a;
+  --color-selected: #542c61;
+}
+
+.nav-symbol {
+  font-size: 21px;
+  line-height: 1;
+}

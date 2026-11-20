@@ -1,36 +1,58 @@
 <ion-header>
   <ion-toolbar>
-    <ion-title>Sleep Tracker</ion-title>
+    <ion-title>
+      <span class="brand-mark" aria-hidden="true">✷</span>
+      Sleep Notes
+    </ion-title>
   </ion-toolbar>
 </ion-header>
-<ion-content class="ion-padding">
-  <h1>Log overnight sleep</h1>
-  <p>
-    <label for="bedtime">Bedtime</label><br>
-    <input id="bedtime" type="datetime-local" [(ngModel)]="bedtime">
-  </p>
-  <p>
-    <label for="wakeTime">Wake-up time</label><br>
-    <input id="wakeTime" type="datetime-local" [(ngModel)]="wakeTime">
-  </p>
-  @if (errorMessage) {
-  <p role="alert">{{ errorMessage }}</p>
-  }
-  <ion-button expand="block" (click)="addOvernight()">
-    Save sleep
-  </ion-button>
-  <h2>Overnight records</h2>
-  <ion-list>
-    @for (entry of overnightData; track entry.id) {
-    <ion-item>
-      <ion-label>
-        <h3>{{ entry.sleepStart | date:'MMM d, y, h:mm a' }}</h3>
-        <p>Woke up: {{ entry.sleepEnd | date:'MMM d, y, h:mm a' }}</p>
-        <p>Duration: {{ entry.summaryString() }}</p>
-      </ion-label>
-    </ion-item>
-    } @empty {
-    <p>No sleep recorded yet.</p>
+
+
+<ion-content>
+  <main class="today-page">
+    <p class="eyebrow">YOUR REST DIARY</p>
+    <h1>Make space<br>for rest.</h1>
+    <!-- 显示夜间睡眠摘要；没有记录时显示首次使用提示 -->
+    @if (latestSleep; as entry) {
+    <section class="sleep-card">
+      <div class="card-top">
+        <span>LAST NIGHT'S NOTE</span>
+        <span class="badge">☾ rested</span>
+      </div>
+
+      <strong class="duration">{{ durationLabel }}</strong>
+      <p>
+        Bed {{ entry.sleepStart | date:'MMM d, h:mm a' }}
+        · Up {{ entry.sleepEnd | date:'MMM d, h:mm a' }}
+      </p>
+
+      <!-- 数据足够时才展示与上一条记录的比较 -->
+      <div class="mini-grid">
+        @if (comparisonLabel; as change) {
+        <div class="mini-card">
+          <span>Previous log</span>
+          <strong>{{ change }}</strong>
+        </div>
+        }
+
+        <div class="mini-card">
+          <span>Last 7 days</span>
+          <strong>
+            {{ nightsLast7Days }}
+            {{ nightsLast7Days === 1 ? 'night' : 'nights' }}
+          </strong>
+        </div>
+      </div>
+    </section>
+    } @else {
+    <section class="sleep-card">
+      <h2>No sleep logged yet</h2>
+      <p>Start by recording last night's sleep.</p>
+    </section>
     }
-  </ion-list>
+
+    <ion-button expand="block" (click)="openSleep()">
+      Write last night's sleep →
+    </ion-button>
+  </main>
 </ion-content>

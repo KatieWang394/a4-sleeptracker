@@ -1,27 +1,127 @@
-#container {
-  text-align: center;
-
-  position: absolute;
-  left: 0;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
+/* Logo 和首页标题沿用原型的醒目字重 */
+ion-title {
+  font-size: 22px;
+  font-weight: 900;
+  letter-spacing: -0.05em;
 }
 
-#container strong {
-  font-size: 20px;
-  line-height: 26px;
+.brand-mark {
+  color: #d89776;
 }
 
-#container p {
-  font-size: 16px;
-  line-height: 22px;
+h1 {
+  font-weight: 800;
+}
 
-  color: #8c8c8c;
+ion-toolbar {
+  --background: #fff9f1;
+  --color: #352d3d;
+}
 
+ion-content {
+  --background: #fff9f1;
+  --color: #352d3d;
+}
+
+.today-page {
+  width: min(100%, 460px);
+  margin: 0 auto;
+  padding: 28px 18px 48px;
+}
+
+.eyebrow {
+  color: #817784;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+}
+
+h1 {
+  margin: 10px 0 30px;
+  font-size: 38px;
+  line-height: 1.08;
+  letter-spacing: -0.05em;
+}
+
+.sleep-card {
+  padding: 22px 20px 24px;
+  margin: 0 9px 30px 0;
+  background: #ffdece;
+  border: 2px solid #eea88f;
+  border-radius: 26px;
+  box-shadow: 9px 10px 0 #ecb99f;
+}
+
+.card-top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  color: #766a75;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+}
+
+.badge {
+  flex-shrink: 0;
+  padding: 7px 10px;
+  background: #fff5ef;
+  border-radius: 20px;
+  color: #7d4678;
+  letter-spacing: 0;
+}
+
+.duration {
+  display: block;
+  margin: 21px 0 10px;
+  color: #542c61;
+  font-size: clamp(42px, 11vw, 56px);
+  line-height: 1;
+  letter-spacing: -0.07em;
+}
+
+.sleep-card p {
+  color: #766a75;
+  font-size: 13px;
+  line-height: 1.5;
+}
+
+.mini-card {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 8px;
+  min-height: 78px;
+  padding: 15px;
+  background: #fff4e9;
+  border-radius: 16px;
+}
+
+/* 小卡片可随手机宽度自动排列 */
+.mini-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
+  gap: 10px;
+  margin-top: 20px;
+}
+
+.mini-card span {
+  color: #817784;
+  font-size: 12px;
+}
+
+.mini-card strong {
+  font-size: 18px;
+}
+
+/* 定制 Ionic 主按钮，保持页面视觉一致 */
+ion-button {
+  --background: #542c61;
+  --background-hover: #653a73;
+  --border-radius: 14px;
+  --box-shadow: none;
+  min-height: 50px;
   margin: 0;
-}
-
-#container a {
-  text-decoration: none;
+  font-weight: 700;
 }
