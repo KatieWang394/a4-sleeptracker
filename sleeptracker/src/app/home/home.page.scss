@@ -1,21 +1,31 @@
 /* Logo 和首页标题沿用原型的醒目字重 */
-ion-title {
-  font-size: 22px;
+/* 页面内的产品标识，保留原型的左对齐布局 */
+.brand-row {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 22px;
+}
+
+.brand {
+  font-size: 23px;
   font-weight: 900;
-  letter-spacing: -0.05em;
+  letter-spacing: -0.06em;
 }
 
 .brand-mark {
+  margin-right: 5px;
   color: #d89776;
 }
 
-h1 {
-  font-weight: 800;
-}
-
-ion-toolbar {
-  --background: #fff9f1;
-  --color: #352d3d;
+.avatar {
+  display: grid;
+  place-items: center;
+  width: 35px;
+  height: 35px;
+  border-radius: 50%;
+  background: #ffdbb3;
+  color: #854b17;
 }
 
 ion-content {
@@ -34,11 +44,13 @@ ion-content {
   font-size: 12px;
   font-weight: 700;
   letter-spacing: 0.12em;
+  margin: 0 0 8px;
 }
 
 h1 {
-  margin: 10px 0 30px;
-  font-size: 38px;
+  margin: 0 0 24px;
+  font-size: 34px;
+  font-weight: 700;
   line-height: 1.08;
   letter-spacing: -0.05em;
 }
@@ -74,11 +86,12 @@ h1 {
 
 .duration {
   display: block;
-  margin: 21px 0 10px;
+  margin: 15px 0 8px;
   color: #542c61;
-  font-size: clamp(42px, 11vw, 56px);
   line-height: 1;
   letter-spacing: -0.07em;
+  font-size: clamp(52px, 14vw, 64px);
+  font-weight: 850;
 }
 
 .sleep-card p {
@@ -92,7 +105,7 @@ h1 {
   flex-direction: column;
   justify-content: center;
   gap: 8px;
-  min-height: 78px;
+  min-height: 72px;
   padding: 15px;
   background: #fff4e9;
   border-radius: 16px;
@@ -103,7 +116,7 @@ h1 {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
   gap: 10px;
-  margin-top: 20px;
+  margin-top: 16px;
 }
 
 .mini-card span {
@@ -123,5 +136,6 @@ ion-button {
   --box-shadow: none;
   min-height: 50px;
   margin: 0;
-  font-weight: 700;
+  font-weight: 800;
+  font-size: 14px;
 }

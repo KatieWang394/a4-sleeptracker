@@ -1,9 +1,7 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
-import {
-	IonButton, IonContent, IonHeader, IonTitle, IonToolbar
-} from '@ionic/angular/standalone';
+import { IonButton, IonContent } from '@ionic/angular/standalone';
 
 import { OvernightSleepData } from '../data/overnight-sleep-data';
 import { SleepService } from '../services/sleep.service';
@@ -12,7 +10,7 @@ import { SleepService } from '../services/sleep.service';
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
 	styleUrls: ['home.page.scss'],
-	imports: [DatePipe, IonButton, IonContent, IonHeader, IonTitle, IonToolbar],
+	imports: [DatePipe, IonButton, IonContent],
 })
 export class HomePage {
 	constructor(
