@@ -52,10 +52,10 @@ export class HistoryPage {
         }));
   }
   // 历史卡片显示简短时长
-    durationLabel(record: OvernightSleepData): string {
+  durationLabel(record: OvernightSleepData): string {
     const minutes = Math.floor(
-        (record.sleepEnd.getTime() - record.sleepStart.getTime()) / 60000
+      (record.sleepEnd.getTime() - record.sleepStart.getTime()) / 60000
     );
     return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
-    }
+  }
 }
