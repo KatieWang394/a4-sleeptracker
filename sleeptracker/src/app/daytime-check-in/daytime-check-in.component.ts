@@ -4,6 +4,7 @@ import { IonButton } from '@ionic/angular/standalone';
 
 import { StanfordSleepinessData } from '../data/stanford-sleepiness-data'; // starter code写好了1-7分的描述
 import { SleepService } from '../services/sleep.service'; // 负责接受睡眠记录的服务，我们要把新纪录给他，history从这一个服务读取记录
+import { SaveUndoService } from '../services/save-undo.service';
 
 @Component({
   selector: 'app-daytime-check-in', 
@@ -24,9 +25,9 @@ export class DaytimeCheckInComponent {
   successMessage = '';
 
 
-  constructor(private sleepService: SleepService) { }
+  constructor(private sleepService: SleepService, private saveUndo: SaveUndoService) { }
 
-  saveCheckIn(): void{
+  public async saveCheckIn(): Promise<void>{
 
     // clear the old message
     this.errorMessage = '';
@@ -61,13 +62,23 @@ export class DaytimeCheckInComponent {
     const record = new StanfordSleepinessData(score, time);
 
     // sleepservice 的 logSleepinessData(sleepData:StanfordSleepinessData)
-    // 服务会把记录加入数组，然后history就可以从那里读到它，也就是保存这一行(但不是持久化).
-    this.sleepService.logSleepinessData(record);
+    // 服务会把记录加入数组，然后history就可以从那里读到它，也就是保存这一行.
+    // this.sleepService.logSleepinessData(record);
+        try{
+      await this.sleepService.logSleepinessData(record);
+    }catch{
+      this.errorMessage = 'Could not save the check-in. Please try again.';
+      return;
+    }
 
     //清空
     this.selectedScore = null;
     this.checkInTime = '';
-    this.successMessage = 'Check-in saved. View it in History.';
+    // this.successMessage = 'Check-in saved. View it in History.';
+
+    void this.saveUndo.show(record.id).catch(() => {
+      this.successMessage = 'Check-in saved. View it in History.';
+    });
 
   }
 

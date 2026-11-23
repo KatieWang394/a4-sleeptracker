@@ -81,3 +81,15 @@ h1 {
     letter-spacing: 0.12em;
     text-transform: uppercase;
 }
+
+/* 让记录文字占满中间的空间。 */
+.record > div {
+  flex: 1;
+  min-width: 0;
+}
+
+/* 让每张卡片的垃圾桶都对齐到右上方。 */
+.record > ion-button {
+  flex-shrink: 0;
+  margin: 0;
+}

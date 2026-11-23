@@ -35,3 +35,12 @@
 /* @import "@ionic/angular/css/palettes/dark.always.css"; */
 /* @import "@ionic/angular/css/palettes/dark.class.css"; */
 @import '@ionic/angular/css/palettes/dark.system.css';
+
+
+
+/* 让保存提示沿用 App 的紫底白字，Undo 按钮也用白色。 */
+ion-toast.save-undo-toast {
+  --background: var(--ion-color-primary);
+  --color: var(--ion-color-primary-contrast);
+  --button-color: var(--ion-color-primary-contrast);
+}

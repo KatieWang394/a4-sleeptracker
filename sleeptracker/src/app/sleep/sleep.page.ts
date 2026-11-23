@@ -4,6 +4,7 @@ import { IonButton, IonContent } from '@ionic/angular/standalone';
 
 import { OvernightSleepData } from '../data/overnight-sleep-data';
 import { SleepService } from '../services/sleep.service';
+import { SaveUndoService } from '../services/save-undo.service';
 
 @Component({
 	selector: 'app-sleep',
@@ -17,7 +18,7 @@ export class SleepPage {
 	errorMessage = '';
 	successMessage = '';
 
-	constructor(public sleepService: SleepService) { }
+	public constructor(public sleepService: SleepService, private saveUndo: SaveUndoService) { }
 
 	// 输入有效时显示预计时长；这里只预览，不保存
 	get durationPreview(): string {
@@ -35,7 +36,7 @@ export class SleepPage {
 		return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 	}
 
-	addOvernight(): void {
+	public async addOvernight(): Promise<void> {
 		const start = new Date(this.bedtime);
 		const end = new Date(this.wakeTime);
 		this.errorMessage = '';
@@ -61,12 +62,23 @@ export class SleepPage {
 		}
 
 		// 把两个时间做成一条记录，然后外层的logOvernightData(...)是吧这条记录交给服务
-		this.sleepService.logOvernightData(
-			new OvernightSleepData(start, end)
-		);
+		// this.sleepService.logOvernightData(
+		// 	new OvernightSleepData(start, end)
+		// );
+		const record = new OvernightSleepData(start, end);
+		try{
+			// await this.sleepService.logOvernightData(new OvernightSleepData(start, end)); 
+			await this.sleepService.logOvernightData(record); //await等这条夜间记录写入
+		}catch{
+  			this.errorMessage = 'Could not save the sleep log. Please try again.';
+  			return;
+		}
 
-		this.successMessage = 'Sleep log saved. View it in History.';
 		this.bedtime = '';
 		this.wakeTime = '';
+
+		void this.saveUndo.show(record.id).catch(() => {
+			this.successMessage = 'Sleep log saved. View it in History.';
+		});
 	}
 }

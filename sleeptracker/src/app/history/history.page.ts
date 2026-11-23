@@ -1,9 +1,10 @@
 import { DatePipe } from '@angular/common';
 import { Component } from '@angular/core';
-import { IonContent } from '@ionic/angular/standalone';
+import { IonContent, IonButton, IonIcon } from '@ionic/angular/standalone';
 import { OvernightSleepData } from '../data/overnight-sleep-data';
 import { StanfordSleepinessData } from '../data/stanford-sleepiness-data';
 import { SleepService } from '../services/sleep.service';
+import { trashOutline } from 'ionicons/icons';
 interface HistoryItem {
   id: string;
   when: Date;
@@ -15,10 +16,24 @@ interface HistoryItem {
   selector: 'app-history',
   templateUrl: 'history.page.html',
   styleUrls: ['history.page.scss'],
-  imports: [DatePipe, IonContent],
+  imports: [DatePipe, IonContent, IonButton, IonIcon],
 })
 export class HistoryPage {
   constructor(public sleepService: SleepService) {}
+
+  public readonly trashIcon = trashOutline; //垃圾桶图标
+  public deleteErrorMessage = '';
+
+  //删除
+  public async deleteRecord(id: string): Promise<void> {
+    this.deleteErrorMessage = '';
+
+    try{
+      await this.sleepService.deleteRecord(id);
+    }catch{
+      this.deleteErrorMessage = 'Could not delete this record. Please try again.';
+    }
+  }
 
   // 将两类记录合并，并按发生时间从新到旧排列
   get historyItems(): HistoryItem[] {
