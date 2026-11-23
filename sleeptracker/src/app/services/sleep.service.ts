@@ -19,6 +19,7 @@ export class SleepService {
 	}
 	}
 
+	// 这是start code里面放的假数据，两条夜间样例和一条4分的困倦样例
 	private addDefaultData() {
 		var goToBed = new Date();
 		goToBed.setDate(goToBed.getDate() - 1); //set to yesterday
