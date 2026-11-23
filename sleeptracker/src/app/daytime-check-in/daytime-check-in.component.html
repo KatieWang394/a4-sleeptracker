@@ -1,0 +1,47 @@
+<section>
+  <!--Daytime check-in 是 Today 首页里的一个区块，所以用 <h2>。-->
+  <h2>Daytime check-in</h2>
+
+  <p>
+    <label for="sleepiness-score">How sleepy did you feel?</label> <!--for="sleepiness-score"对应下一行下拉框的id-->
+    <select id="sleepiness-score" [(ngModel)]="selectedScore"> <!--selceet是下拉框-->
+      <option [ngValue]="null" disabled>Choose a score from 1 to 7</option>
+
+      <!--track score让 Angular用这个数字区分每个选项-->
+      <!--scores是[1,2,3,4,5,6,7]-->
+      <!--[ngValue]="score"决定选中后,传给.ts 的值-->
+      @for (score of scores; track score) {
+        <option [ngValue]="score">{{ score }}: {{ descriptions[score] }}</option> <!--4: Somewhat foggy, let down-->
+      }
+    </select>
+  </p>
+
+  <!--用户选择分数再显示一次描述-->
+  @if (selectedScore !== null) {
+    <p>{{ descriptions[selectedScore] }}</p>
+  }
+
+  <!--问日期和时间-->
+  <p>
+    <label for="check-in-time">When did you feel this way?</label>
+    <!--type="datetime-local" 让浏览器提供日期和时间选择器。-->
+    <!--[(ngModel)]="checkInTime"把用户选的时间交给.ts里的 checkInTime，之后 saveCheckIn() 就能读取它。-->
+    <input id="check-in-time" type="datetime-local" [(ngModel)]="checkInTime">
+  </p>
+
+  <!--保存的按钮-->
+  <!--用再.ts 导入的 Ionic 按钮。
+  expand="block" 让按钮撑满可用宽度，
+  (click)="saveCheckIn()" 让它在被点击时运行你的保存方法。-->
+  <ion-button type="button" expand="block" (click)="saveCheckIn()">
+    Save check-in
+  </ion-button>
+
+  @if (errorMessage) {
+    <p>{{ errorMessage }}</p>
+  }
+
+  @if (successMessage) {
+    <p>{{ successMessage }}</p>
+  }
+</section>
