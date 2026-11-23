@@ -60,6 +60,7 @@ export class SleepPage {
 			return;
 		}
 
+		// 把两个时间做成一条记录，然后外层的logOvernightData(...)是吧这条记录交给服务
 		this.sleepService.logOvernightData(
 			new OvernightSleepData(start, end)
 		);
