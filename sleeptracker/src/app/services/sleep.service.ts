@@ -61,6 +61,15 @@ export class SleepService {
     		return;
   		}
 
+		this.restoreRecords(saved);
+  	}
+
+  	private restoreRecords(saved: StoredRecord[]): void {
+    	// 先清空页面读取的数组，再把数据库里的最新列表放进去。
+    	SleepService.AllSleepData.length = 0;
+    	SleepService.AllOvernightData.length = 0;
+    	SleepService.AllSleepinessData.length = 0;
+		
 		// 对每个saved数据
 		for (const item of saved) {
 
@@ -145,25 +154,59 @@ export class SleepService {
 	}
 
 
-	private saveRecord(record: SleepRecord): Promise<void> {
+	// private saveRecord(record: SleepRecord): Promise<void> {
 
-		//要等前一笔保存完在运行花括号里的步骤所以.then()
-		//async()因为用await
-  		const save = this.saveQueue.then(async() => {
+	// 	//要等前一笔保存完在运行花括号里的步骤所以.then()
+	// 	//async()因为用await
+  	// 	const save = this.saveQueue.then(async() => {
 			
-			//等loadRecords()完成，拿到记录了再把新纪录加进去
-    		await this.ready;
+	// 		//等loadRecords()完成，拿到记录了再把新纪录加进去
+    // 		await this.ready;
 
-			// 把新的和旧的加在一起
-    		const records = [...SleepService.AllOvernightData, ...SleepService.AllSleepinessData, record];
-    		const storedRecords = records.map(item => this.toStoredRecord(item)); //把记录转化成上面顶级的数据库格式
+	// 		// 把新的和旧的加在一起
+    // 		const records = [...SleepService.AllOvernightData, ...SleepService.AllSleepinessData, record];
+    // 		const storedRecords = records.map(item => this.toStoredRecord(item)); //把记录转化成上面顶级的数据库格式
 
-	    	await this.storage.set(this.storageKey, storedRecords); //写入数据库
-    		this.addRecord(record); //给History和Today正在读取的数组
-  		});
+	//     	await this.storage.set(this.storageKey, storedRecords); //写入数据库
+    // 		this.addRecord(record); //给History和Today正在读取的数组
+  	// 	});
 
-		this.saveQueue = save.catch(() => undefined);
-  		return save;
+	// 	this.saveQueue = save.catch(() => undefined);
+  	// 	return save;
+	// }
+
+	private saveRecord(record: SleepRecord): Promise<void> {
+  	// 将新记录加入数据库里的最新列表。
+  		return this.updateRecords(records => [...records, this.toStoredRecord(record)]);
+	}
+
+	private updateRecords(change: (records: StoredRecord[]) => StoredRecord[],): Promise<void> {
+  		// 等当前标签页上一笔操作完成，再执行这一笔。
+  		const write = this.saveQueue.then(async () => {
+			await this.ready;
+			const update = async () => {
+				// 先读数据库，避免用这个标签页手上的旧列表覆盖新记录。
+      			const saved: StoredRecord[] | null = await this.storage.get(this.storageKey);
+      			const current = saved ?? [...SleepService.AllOvernightData, ...SleepService.AllSleepinessData,
+				].map(record => this.toStoredRecord(record));
+				
+				// change 是这次要做的操作：加一条，或者按 ID 删一条。
+				const updated = change(current);
+      			await this.storage.set(this.storageKey, updated);
+      			this.restoreRecords(updated);
+    		};
+
+    		// 加锁后才读写，避免两个标签页同时更新同一份列表。
+    		if(navigator.locks){
+      			await navigator.locks.request('sleep-notes-records', update);
+    		}else{
+      			await update();
+    		}
+		});
+		
+		// 某一笔失败后，下一笔仍然可以继续执行。
+  		this.saveQueue = write.catch(() => undefined);
+  		return write;
 	}
 
 	// 把记录转化成上面定义的数据路格式
@@ -185,34 +228,39 @@ export class SleepService {
 
 	}
 
-	//给undo和history删除用的
-	public deleteRecord(id: string): Promise<void> {
+	// //给undo和history删除用的
+	// public deleteRecord(id: string): Promise<void> {
 
 		
-		const deletion = this.saveQueue.then(async () => {
+	// 	const deletion = this.saveQueue.then(async () => {
 
-			//先等app读取完记录再开始删
-			await this.ready;
+	// 		//先等app读取完记录再开始删
+	// 		await this.ready;
 
-			//根据id找出来
-    		const nights = SleepService.AllOvernightData.filter(record => record.id !== id);
-    		const checkIns = SleepService.AllSleepinessData.filter(record => record.id !== id);
-    		const remaining = [...nights, ...checkIns]; // 合并删除后要保留的记录
+	// 		//根据id找出来
+    // 		const nights = SleepService.AllOvernightData.filter(record => record.id !== id);
+    // 		const checkIns = SleepService.AllSleepinessData.filter(record => record.id !== id);
+    // 		const remaining = [...nights, ...checkIns]; // 合并删除后要保留的记录
 
-			// 等数据库写完，再继续修改页面用的数组
-			// 把旧的列表更新成删除后的列表
-	    	await this.storage.set(
-      			this.storageKey,
-      			remaining.map(record => this.toStoredRecord(record)), //转换要写进去的数据库里的格式
-    		);
+	// 		// 等数据库写完，再继续修改页面用的数组
+	// 		// 把旧的列表更新成删除后的列表
+	//     	await this.storage.set(
+    //   			this.storageKey,
+    //   			remaining.map(record => this.toStoredRecord(record)), //转换要写进去的数据库里的格式
+    // 		);
 
-			//更新
-    		SleepService.AllOvernightData = nights; 
-    		SleepService.AllSleepinessData = checkIns;
-    		SleepService.AllSleepData = SleepService.AllSleepData.filter(record => record.id !== id);
-  		});
+	// 		//更新
+    // 		SleepService.AllOvernightData = nights; 
+    // 		SleepService.AllSleepinessData = checkIns;
+    // 		SleepService.AllSleepData = SleepService.AllSleepData.filter(record => record.id !== id);
+  	// 	});
 
-  		this.saveQueue = deletion.catch(() => undefined);
-  		return deletion;
+  	// 	this.saveQueue = deletion.catch(() => undefined);
+  	// 	return deletion;
+	// }
+
+	public deleteRecord(id: string): Promise<void> {
+  		// 从数据库的最新列表删除这个 ID，保留其他标签页刚加的记录。
+  		return this.updateRecords(records => records.filter(record => record.id !== id));
 	}
 }

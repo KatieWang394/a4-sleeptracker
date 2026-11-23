@@ -23,11 +23,19 @@ export class DaytimeCheckInComponent {
   checkInTime = '';
   errorMessage = '';
   successMessage = '';
+  
+  // 记录数据库是否正在写入，控制保存按钮什么时候可以再点。
+  public isSaving = false;
 
 
   constructor(private sleepService: SleepService, private saveUndo: SaveUndoService) { }
 
   public async saveCheckIn(): Promise<void>{
+
+    // 快速连点时，按钮可能还没更新。上一笔还在保存就结束这次调用。
+    if(this.isSaving){
+      return;
+    }
 
     // clear the old message
     this.errorMessage = '';
@@ -64,11 +72,17 @@ export class DaytimeCheckInComponent {
     // sleepservice 的 logSleepinessData(sleepData:StanfordSleepinessData)
     // 服务会把记录加入数组，然后history就可以从那里读到它，也就是保存这一行.
     // this.sleepService.logSleepinessData(record);
-        try{
+    // 输入验证通过后，开始保存这条记录。
+    this.isSaving = true;
+
+    try{
       await this.sleepService.logSleepinessData(record);
     }catch{
       this.errorMessage = 'Could not save the check-in. Please try again.';
       return;
+    }finally{
+      // 成功或失败都解除禁用，让用户能继续记录或重试。
+      this.isSaving = false;
     }
 
     //清空

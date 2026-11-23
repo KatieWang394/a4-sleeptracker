@@ -18,6 +18,9 @@ export class SleepPage {
 	errorMessage = '';
 	successMessage = '';
 
+	// 保存状态由表单和按钮共用。写入期间暂时禁止再次提交。
+	public isSaving = false;
+
 	public constructor(public sleepService: SleepService, private saveUndo: SaveUndoService) { }
 
 	// 输入有效时显示预计时长；这里只预览，不保存
@@ -37,6 +40,12 @@ export class SleepPage {
 	}
 
 	public async addOvernight(): Promise<void> {
+
+		// 快速连点时，第二次点击可能先于按钮禁用，所以这里也检查一次。
+		if(this.isSaving) {
+  			return;
+		}
+
 		const start = new Date(this.bedtime);
 		const end = new Date(this.wakeTime);
 		this.errorMessage = '';
@@ -66,12 +75,16 @@ export class SleepPage {
 		// 	new OvernightSleepData(start, end)
 		// );
 		const record = new OvernightSleepData(start, end);
+		// 两个时间都通过验证后，开始保存这条夜间记录。
+		this.isSaving = true;
 		try{
-			// await this.sleepService.logOvernightData(new OvernightSleepData(start, end)); 
-			await this.sleepService.logOvernightData(record); //await等这条夜间记录写入
+			await this.sleepService.logOvernightData(record);
 		}catch{
   			this.errorMessage = 'Could not save the sleep log. Please try again.';
   			return;
+		}finally{
+  			// 成功或失败都解除禁用，让用户能继续记录或重试。
+  			this.isSaving = false;
 		}
 
 		this.bedtime = '';

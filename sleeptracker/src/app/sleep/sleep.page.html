@@ -31,7 +31,8 @@
     <p class="feedback success" role="status">{{ successMessage }}</p>
     }
 
-    <ion-button expand="block" (click)="addOvernight()">
+    <!-- 数据库写入期间禁用按钮，避免重复保存。 -->
+    <ion-button expand="block" [disabled]="isSaving" (click)="addOvernight()">
       Save sleep log
     </ion-button>
   </main>

@@ -13,7 +13,7 @@ export class SaveUndoService {
     const toast = await this.toastController.create({
       message: 'Record saved.',
       cssClass: 'save-undo-toast',
-      duration: 5000, //5秒
+      duration: 3000, //3秒
       buttons: [{ text: 'Undo', role: 'undo' }], //text给用户看的, roles给程序看的名字, 用力啊判断题时是不是因为用户点了Undo才关闭
     });
 

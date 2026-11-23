@@ -33,7 +33,8 @@
   <!--用再.ts 导入的 Ionic 按钮。
   expand="block" 让按钮撑满可用宽度，
   (click)="saveCheckIn()" 让它在被点击时运行你的保存方法。-->
-  <ion-button type="button" expand="block" (click)="saveCheckIn()">
+  <!-- 数据库写入期间禁用按钮，避免重复保存。 -->
+  <ion-button type="button" expand="block" [disabled]="isSaving" (click)="saveCheckIn()">
     Save check-in
   </ion-button>
 
