@@ -5,12 +5,13 @@ import { IonButton, IonContent } from '@ionic/angular/standalone';
 
 import { OvernightSleepData } from '../data/overnight-sleep-data';
 import { SleepService } from '../services/sleep.service';
+import { DaytimeCheckInComponent } from '../daytime-check-in/daytime-check-in.component';
 
 @Component({
 	selector: 'app-home',
 	templateUrl: 'home.page.html',
 	styleUrls: ['home.page.scss'],
-	imports: [DatePipe, IonButton, IonContent],
+	imports: [DatePipe, IonButton, IonContent, DaytimeCheckInComponent],
 })
 export class HomePage {
 	constructor(
@@ -28,7 +29,7 @@ export class HomePage {
 		return `${Math.floor(minutes / 60)}h ${minutes % 60}m`;
 	}
 
-		// 按醒来时间排序，避免把“最后加入数组”误当作最近一晚
+	// 按醒来时间排序，避免把“最后加入数组”误当作最近一晚
 	get nightsByWakeTime(): OvernightSleepData[] {
 		return [...SleepService.AllOvernightData].sort(
 			(a, b) => b.sleepEnd.getTime() - a.sleepEnd.getTime()
@@ -65,7 +66,7 @@ export class HomePage {
 			.filter(record => record.sleepEnd >= cutoff && record.sleepEnd <= today)
 			.map(record => record.sleepStart.toDateString());
 
-	return new Set(dates).size;
+		return new Set(dates).size;
 	}
 	// 点击首页按钮，进入夜间睡眠记录页
 	openSleep(): void {
