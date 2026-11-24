@@ -16,7 +16,6 @@ export class SleepPage {
 	bedtime = '';
 	wakeTime = '';
 	errorMessage = '';
-	successMessage = '';
 
 	// 保存状态由表单和按钮共用。写入期间暂时禁止再次提交。
 	public isSaving = false;
@@ -49,7 +48,6 @@ export class SleepPage {
 		const start = new Date(this.bedtime);
 		const end = new Date(this.wakeTime);
 		this.errorMessage = '';
-		this.successMessage = '';
 
 		// 阻止漏填、时间颠倒、超过一天和未来时间
 		if (!this.bedtime || !this.wakeTime ||
@@ -90,8 +88,6 @@ export class SleepPage {
 		this.bedtime = '';
 		this.wakeTime = '';
 
-		void this.saveUndo.show(record.id).catch(() => {
-			this.successMessage = 'Sleep log saved. View it in History.';
-		});
+		this.saveUndo.show(record.id);
 	}
 }

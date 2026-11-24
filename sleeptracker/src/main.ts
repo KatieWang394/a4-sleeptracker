@@ -15,7 +15,7 @@ bootstrapApplication(AppComponent, {
   // providers 是这里的一项配置，`[` 表示后面是一份清单。清单里列出 App 启动时需要提供给 Angular 的工具和规则。路由、Ionic 和存储都在这里注册。
   providers: [
     { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
-    provideIonicAngular(),
+    provideIonicAngular({ mode: 'ios' }),
     provideRouter(routes, withPreloading(PreloadAllModules)),
 
     // 开始调用 importProvidersFrom。

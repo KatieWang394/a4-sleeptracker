@@ -1,5 +1,15 @@
 <!-- 三个页面共用这一条底部导航 -->
 <ion-tabs>
+    <div slot="bottom" class="save-feedback" aria-live="polite">
+        @if (saveUndo.notification(); as notification) {
+            <div class="save-feedback-pill">
+                <span>{{ notification.message }}</span>
+                @if (notification.recordId; as recordId) {
+                    <button type="button" (click)="saveUndo.undo(recordId)">Undo</button>
+                }
+            </div>
+        }
+    </div>
     <ion-tab-bar slot="bottom">
         <ion-tab-button tab="home">
             <span class="nav-symbol" aria-hidden="true">⌂</span>

@@ -11,13 +11,14 @@ ion-content {
 }
 
 .history-page {
+    --history-secondary-text: #746977;
     width: min(100%, 460px);
     margin: 0 auto;
     padding: 28px 18px 48px;
 }
 
 .eyebrow {
-    color: #817784;
+    color: var(--history-secondary-text);
     font-size: 12px;
     font-weight: 700;
     letter-spacing: 0.12em;
@@ -31,7 +32,7 @@ h1 {
 
 .intro {
     margin-bottom: 25px;
-    color: #817784;
+    color: var(--history-secondary-text);
     font-size: 13px;
 }
 
@@ -67,7 +68,7 @@ h1 {
 .record p,
 .empty {
     margin: 5px 0 0;
-    color: #817784;
+    color: var(--history-secondary-text);
     font-size: 12px;
     line-height: 1.5;
 }
@@ -75,7 +76,7 @@ h1 {
 /* 按日期分隔记录，方便快速浏览 */
 .date-heading {
     margin: 26px 2px 11px;
-    color: #90788c;
+    color: #785f74;
     font-size: 12px;
     font-weight: 850;
     letter-spacing: 0.12em;
@@ -91,5 +92,7 @@ h1 {
 /* 让每张卡片的垃圾桶都对齐到右上方。 */
 .record > ion-button {
   flex-shrink: 0;
+  min-width: 44px;
+  min-height: 44px;
   margin: 0;
 }

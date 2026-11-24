@@ -1,99 +1,76 @@
-import { Component } from '@angular/core'; 
-import { FormsModule } from '@angular/forms'; //表单要用ngModel，让用户选的value传回来
-import { IonButton } from '@ionic/angular/standalone';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { IonButton, IonPopover } from '@ionic/angular/standalone';
 
-import { StanfordSleepinessData } from '../data/stanford-sleepiness-data'; // starter code写好了1-7分的描述
-import { SleepService } from '../services/sleep.service'; // 负责接受睡眠记录的服务，我们要把新纪录给他，history从这一个服务读取记录
+import { StanfordSleepinessData } from '../data/stanford-sleepiness-data';
 import { SaveUndoService } from '../services/save-undo.service';
+import { SleepService } from '../services/sleep.service';
 
 @Component({
-  selector: 'app-daytime-check-in', 
-  standalone: true, //开启后可以被Today直接导入
-  imports: [FormsModule, IonButton], //这个component的html要用的东西
+  selector: 'app-daytime-check-in',
+  imports: [FormsModule, IonButton, IonPopover],
   templateUrl: './daytime-check-in.component.html',
   styleUrls: ['./daytime-check-in.component.scss'],
 })
-
 export class DaytimeCheckInComponent {
-
   readonly descriptions = StanfordSleepinessData.ScaleValues;
-  readonly scores = [1, 2, 3, 4, 5, 6, 7]; // 因为有七个状态，所以html会根据它生成七个下拉选项
+  readonly scores = [1, 2, 3, 4, 5, 6, 7];
 
-  selectedScore: number | null = null; // null means 用户还没选
+  selectedScore: number | null = null;
   checkInTime = '';
   errorMessage = '';
-  successMessage = '';
-  
-  // 记录数据库是否正在写入，控制保存按钮什么时候可以再点。
-  public isSaving = false;
+  isSaving = false;
 
+  constructor(
+    private sleepService: SleepService,
+    private saveUndo: SaveUndoService
+  ) {}
 
-  constructor(private sleepService: SleepService, private saveUndo: SaveUndoService) { }
-
-  public async saveCheckIn(): Promise<void>{
-
-    // 快速连点时，按钮可能还没更新。上一笔还在保存就结束这次调用。
-    if(this.isSaving){
-      return;
+  selectScore(score: number): void {
+    if (this.selectedScore === null) {
+      const now = new Date();
+      // datetime-local expects local time without a timezone suffix.
+      const localTime = new Date(now.getTime() - now.getTimezoneOffset() * 60_000);
+      this.checkInTime = localTime.toISOString().slice(0, 16);
     }
-
-    // clear the old message
+    this.selectedScore = score;
     this.errorMessage = '';
-    this.successMessage = '';
+  }
+
+  async saveCheckIn(): Promise<void> {
+    if (this.isSaving) return;
+
+    this.errorMessage = '';
 
     const score = this.selectedScore;
-
-    // 如果还没选分数，或者value不在1-7里，就print error message
-    if(score === null || !this.scores.includes(score)){
+    if (score === null || !this.scores.includes(score)) {
       this.errorMessage = 'Please choose a sleepiness score from 1 to 7.';
       return;
     }
 
     const time = new Date(this.checkInTime);
-
-    // 现在检查checkInTime如果是空的，或者时间解析不了，就print error message
-    if(!this.checkInTime || Number.isNaN(time.getTime())){
+    if (!this.checkInTime || Number.isNaN(time.getTime())) {
       this.errorMessage = 'Please enter the date and time you felt this way.';
       return;
     }
-
-    // 如果用户选了未来的时间
-    if(time.getTime() > Date.now()){
-      this.errorMessage = 'The check-in time cannot be in the future.'
+    if (time.getTime() > Date.now()) {
+      this.errorMessage = 'The check-in time cannot be in the future.';
       return;
     }
 
-    
-    // 如果输入的信息都没错，开始创建记录，保存记录，然后清空表单
-    // 现在创建记录
-    // StanfordSleepinessData的constructor需要：(loggedValue:number, loggedAt:Date = new Date()) 
     const record = new StanfordSleepinessData(score, time);
-
-    // sleepservice 的 logSleepinessData(sleepData:StanfordSleepinessData)
-    // 服务会把记录加入数组，然后history就可以从那里读到它，也就是保存这一行.
-    // this.sleepService.logSleepinessData(record);
-    // 输入验证通过后，开始保存这条记录。
     this.isSaving = true;
-
-    try{
+    try {
       await this.sleepService.logSleepinessData(record);
-    }catch{
+    } catch {
       this.errorMessage = 'Could not save the check-in. Please try again.';
       return;
-    }finally{
-      // 成功或失败都解除禁用，让用户能继续记录或重试。
+    } finally {
       this.isSaving = false;
     }
 
-    //清空
     this.selectedScore = null;
     this.checkInTime = '';
-    // this.successMessage = 'Check-in saved. View it in History.';
-
-    void this.saveUndo.show(record.id).catch(() => {
-      this.successMessage = 'Check-in saved. View it in History.';
-    });
-
+    this.saveUndo.show(record.id);
   }
-
 }

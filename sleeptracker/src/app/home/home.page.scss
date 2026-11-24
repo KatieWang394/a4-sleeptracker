@@ -1,31 +1,13 @@
-/* Logo 和首页标题沿用原型的醒目字重 */
-/* 页面内的产品标识，保留原型的左对齐布局 */
-.brand-row {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
-}
-
 .brand {
-  font-size: 23px;
-  font-weight: 900;
-  letter-spacing: -0.06em;
+  margin: 0 0 18px;
+  font-size: 30px;
+  font-weight: 850;
+  letter-spacing: -0.05em;
 }
 
 .brand-mark {
   margin-right: 5px;
   color: #d89776;
-}
-
-.avatar {
-  display: grid;
-  place-items: center;
-  width: 35px;
-  height: 35px;
-  border-radius: 50%;
-  background: #ffdbb3;
-  color: #854b17;
 }
 
 ion-content {
@@ -36,65 +18,42 @@ ion-content {
 .today-page {
   width: min(100%, 460px);
   margin: 0 auto;
-  padding: 28px 18px 48px;
-}
-
-.eyebrow {
-  color: #817784;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.12em;
-  margin: 0 0 8px;
-}
-
-h1 {
-  margin: 0 0 24px;
-  font-size: 34px;
-  font-weight: 700;
-  line-height: 1.08;
-  letter-spacing: -0.05em;
+  padding: 20px 16px 32px;
 }
 
 .sleep-card {
-  padding: 22px 20px 24px;
-  margin: 0 9px 30px 0;
+  padding: 16px;
+  margin: 0 8px 20px 0;
   background: #ffdece;
   border: 2px solid #eea88f;
   border-radius: 26px;
-  box-shadow: 9px 10px 0 #ecb99f;
+  box-shadow: 8px 8px 0 #ecb99f;
 }
 
 .card-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 8px;
-  color: #766a75;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 0.06em;
+  color: #62476b;
+  font-size: 13px;
+  font-weight: 750;
 }
 
-.badge {
-  flex-shrink: 0;
-  padding: 7px 10px;
-  background: #fff5ef;
-  border-radius: 20px;
-  color: #7d4678;
-  letter-spacing: 0;
+.sleep-card h2 {
+  margin: 0;
+  font-size: 19px;
+  font-weight: 750;
 }
 
 .duration {
   display: block;
-  margin: 15px 0 8px;
+  margin: 8px 0 6px;
   color: #542c61;
   line-height: 1;
   letter-spacing: -0.07em;
-  font-size: clamp(52px, 14vw, 64px);
+  font-size: clamp(40px, 12vw, 56px);
   font-weight: 850;
 }
 
 .sleep-card p {
+  margin: 0;
   color: #766a75;
   font-size: 13px;
   line-height: 1.5;
@@ -104,9 +63,9 @@ h1 {
   display: flex;
   flex-direction: column;
   justify-content: center;
-  gap: 8px;
-  min-height: 72px;
-  padding: 15px;
+  gap: 4px;
+  min-height: 56px;
+  padding: 8px 10px;
   background: #fff4e9;
   border-radius: 16px;
 }
@@ -114,9 +73,9 @@ h1 {
 /* 小卡片可随手机宽度自动排列 */
 .mini-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(125px, 1fr));
-  gap: 10px;
-  margin-top: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(104px, 1fr));
+  gap: 8px;
+  margin-top: 10px;
 }
 
 .mini-card span {
@@ -138,4 +97,39 @@ ion-button {
   margin: 0;
   font-weight: 800;
   font-size: 14px;
+}
+
+@media (max-width: 360px) {
+  .today-page {
+    padding-top: 16px;
+  }
+
+  .brand {
+    margin-bottom: 10px;
+    font-size: 28px;
+  }
+
+  .sleep-card {
+    margin-bottom: 16px;
+    padding: 12px 14px;
+  }
+
+  .duration {
+    margin-block: 5px 4px;
+    font-size: 34px;
+  }
+
+  .mini-grid {
+    margin-top: 7px;
+  }
+
+  .mini-card {
+    min-height: 40px;
+    gap: 2px;
+    padding-block: 4px;
+  }
+
+  .mini-card strong {
+    font-size: 16px;
+  }
 }

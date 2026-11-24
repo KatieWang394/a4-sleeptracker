@@ -1,6 +1,5 @@
 <ion-content>
   <main class="sleep-page">
-    <p class="eyebrow">01 / NIGHTTIME</p>
     <h1>Log last night</h1>
     <p class="intro">
       Fill this in when you wake up. The night may cross midnight.
@@ -26,9 +25,6 @@
 
     @if (errorMessage) {
     <p class="feedback error" role="alert">{{ errorMessage }}</p>
-    }
-    @if (successMessage) {
-    <p class="feedback success" role="status">{{ successMessage }}</p>
     }
 
     <!-- 数据库写入期间禁用按钮，避免重复保存。 -->
